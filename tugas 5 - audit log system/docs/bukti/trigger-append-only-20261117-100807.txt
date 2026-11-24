@@ -1,0 +1,49 @@
+﻿== Bukti Trigger Append-Only AUDIT_LOGS ==
+Waktu    : 2026-11-17 10:08:07
+Database : review_kantin @ localhost,1433
+User     : praktikum_user
+
+PASS  koneksi database
+
+Trigger pada dbo.AUDIT_LOGS:
+name|is_instead_of_trigger
+----|---------------------
+TR_AUDIT_LOGS_AppendOnly|1
+
+(1 rows affected)
+PASS  trigger TR_AUDIT_LOGS_AppendOnly ada
+PASS  trigger bertipe INSTEAD OF
+
+Baris audit yang akan dicoba diubah/dihapus:
+id|action|target_table|target_id
+--|------|------------|---------
+1|CREATE_USER|USERS|2
+
+(1 rows affected)
+Target id: 1
+Jumlah baris sebelum: 1
+
+Percobaan 1: UPDATE dbo.AUDIT_LOGS SET action = 'HACKED'
+PASS  UPDATE ditolak trigger (exit 1)
+      Msg 50010, Level 16, State 1, Server DESKTOP-9I7IQTE, Procedure TR_AUDIT_LOGS_AppendOnly, Line 8
+      AUDIT_LOGS bersifat append-only.
+
+Percobaan 2: DELETE FROM dbo.AUDIT_LOGS
+PASS  DELETE ditolak trigger (exit 1)
+      Msg 50010, Level 16, State 1, Server DESKTOP-9I7IQTE, Procedure TR_AUDIT_LOGS_AppendOnly, Line 8
+      AUDIT_LOGS bersifat append-only.
+
+Verifikasi data tidak berubah:
+Jumlah baris sesudah: 1
+Baris id 1 sesudah:
+action|target_table|target_id|created_at
+------|------------|---------|----------
+CREATE_USER|USERS|2|2026-09-25 14:42:42
+
+(1 rows affected)
+PASS  jumlah baris tidak berubah
+PASS  isi baris target tidak berubah
+PASS  tidak ada action HACKED di database
+
+Selesai: 8 PASS, 0 FAIL
+Log disimpan di: C:\BASDAT\praktikum-rsi\tugas 5 - audit log system\docs\bukti\trigger-append-only-20261117-100807.txt

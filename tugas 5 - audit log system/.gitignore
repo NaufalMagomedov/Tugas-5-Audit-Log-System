@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Runtime uploads (file dari user)
+backend/uploads/
+
+# Log & OS
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Transcript PowerShell memuat nama user/mesin.
+# Bukti uji utama (audit-log-*.txt & trigger-append-only-*.txt) tetap ikut.
+docs/bukti/bukti-audit-*.txt

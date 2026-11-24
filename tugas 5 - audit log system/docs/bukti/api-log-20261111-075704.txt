@@ -1,0 +1,45 @@
+﻿== Uji Integrasi API Review Kantin ==
+Waktu  : 2026-11-11 07:57:04
+Target : http://localhost:3000/api/v1
+
+PASS  health check backend -> 200
+
+PASS  login admin (admin@kantin.test) -> 200
+PASS  login owner (tini@kantin.test) -> 200
+PASS  login customer (bagas@student.test) -> 200
+
+PASS  GET /auth/me (admin) -> 200
+PASS  role pada /auth/me -> admin
+PASS  email pada /auth/me -> admin@kantin.test
+PASS  GET /auth/me tanpa sesi -> 401
+PASS  code 401 -> UNAUTHORIZED
+PASS  GET /stalls/mine tanpa sesi -> 401
+
+PASS  GET /stalls -> 200
+PASS  GET /stalls mengembalikan data
+PASS  GET /stalls/1 -> 200
+PASS  detail warung punya nama
+PASS  GET /stalls/99999 (tidak ada) -> 404
+PASS  code 404 warung -> STALL_NOT_FOUND
+
+PASS  POST /stalls (admin) -> 201
+PASS  warung admin mendapat id
+PASS  PUT /stalls/:id (admin) -> 200
+PASS  lokasi tersimpan di backend -> Kantin Uji Lantai 2 20261111-075704
+PASS  DELETE /stalls/:id (admin) -> 200
+
+PASS  GET /admin/reports (customer) -> 403
+PASS  code 403 role -> FORBIDDEN
+PASS  POST /stalls (customer) -> 403
+
+PASS  PUT warung owner lain -> 403
+PASS  code STALL_FORBIDDEN -> STALL_FORBIDDEN
+PASS  DELETE warung owner lain -> 403
+
+PASS  POST /stalls (owner) -> 201
+PASS  warung owner mendapat id
+PASS  PUT warung milik owner -> 200
+PASS  DELETE warung milik owner (opsi A) -> 200
+
+Ringkasan: 31 PASS, 0 FAIL
+Log      : C:\BASDAT\praktikum-rsi\tugas 4\hands-on-3-integrasi-fe-be-error-handling\docs\bukti\api-log-20261111-075704.txt

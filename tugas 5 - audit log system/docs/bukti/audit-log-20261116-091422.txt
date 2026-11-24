@@ -1,0 +1,75 @@
+﻿== Uji Integrasi Audit Log System (Tugas 5) ==
+Waktu  : 2026-11-16 09:14:22
+Target : http://localhost:3000/api/v1
+
+PASS  health check backend -> 200
+
+PASS  login admin (admin@kantin.test) -> 200
+PASS  login owner (tini@kantin.test) -> 200
+PASS  login customer (bagas@student.test) -> 200
+
+PASS  GET /api/audit-logs tanpa sesi -> 401
+PASS  GET /api/audit-logs sebagai customer -> 403
+PASS  code 403 audit -> FORBIDDEN
+PASS  GET /api/audit-logs/:id sebagai customer -> 403
+
+PASS  GET /api/audit-logs (admin) -> 200
+PASS  status respons -> success
+PASS  pagination.page -> 1
+PASS  pagination.pageSize -> 5
+PASS  items berupa array
+PASS  pagination.total tersedia
+PASS  pagination.totalPages tersedia
+PASS  item punya userName
+PASS  item punya userEmail
+PASS  item punya metadata
+
+PASS  GET /api/audit-logs?userId&targetId -> 200
+PASS  semua baris cocok userId DAN targetId
+
+PASS  GET /api/audit-logs/:id -> 200
+PASS  detail id sama dengan daftar -> 38
+PASS  detail action sama dengan daftar -> LOGIN
+PASS  GET /api/audit-logs/:id tidak ada -> 404
+PASS  code 404 audit -> AUDIT_NOT_FOUND
+
+PASS  page=0 ditolak -> 400
+PASS  code page=0 -> VALIDATION_ERROR
+PASS  pageSize=101 ditolak -> 400
+PASS  parameter asing ditolak -> 400
+PASS  from > to ditolak -> 400
+PASS  tanggal tidak ada di kalender ditolak -> 400
+
+PASS  filter LOGIN admin -> 200
+PASS  ada catatan LOGIN admin
+PASS  target_table LOGIN -> USERS
+PASS  target_id LOGIN = id user -> 1
+PASS  metadata.result LOGIN -> success
+PASS  metadata.ip_address LOGIN terisi
+PASS  metadata.user_agent LOGIN terisi
+
+PASS  POST /stalls (owner) -> 201
+PASS  warung uji mendapat id
+PASS  PUT /stalls/:id (owner) -> 200
+PASS  POST review (customer) -> 201
+PASS  review uji mendapat id
+PASS  DELETE review (customer) -> 204
+PASS  DELETE /stalls/:id (owner) -> 200
+PASS  audit CREATE_STALL ada
+PASS  audit UPDATE_STALL ada
+PASS  audit DELETE_STALL ada
+PASS  audit CREATE_REVIEW ada (bonus)
+PASS  audit DELETE_REVIEW ada (bonus)
+
+PASS  POST /auth/logout (admin) -> 200
+PASS  login admin-verify (admin@kantin.test) -> 200
+PASS  filter LOGOUT admin -> 200
+PASS  ada catatan LOGOUT admin
+PASS  target_table LOGOUT -> USERS
+PASS  target_id LOGOUT = id user -> 1
+PASS  metadata.result LOGOUT -> success
+PASS  metadata.ip_address LOGOUT terisi
+PASS  metadata.user_agent LOGOUT terisi
+
+Selesai: 59 PASS, 0 FAIL
+Log disimpan di: C:\BASDAT\praktikum-rsi\tugas 5 - audit log system\docs\bukti\audit-log-20261116-091422.txt
